@@ -10,5 +10,5 @@ Once you initialize this these are the things that you should take notice of:
 5. Remember no changes can be done after the value is entered.
 6. Be mindful of giving proper input!
 
-**Do your best**
+**Do your best!**
 
