@@ -9,5 +9,6 @@ Once you initialize this these are the things that you should take notice of:
 4. You could exit at any point of time.
 5. Follow the in-game instructions.
 6. Be mindful of giving proper input!
+   
 **Enjoy!**
 
