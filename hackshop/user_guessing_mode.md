@@ -1,6 +1,6 @@
 
 
-*User Guessing mode*
+**User Guessing mode**
 
 Once you initialize this these are the things that you should take notice of:
 1. You set the range of no(s). you gonna guess [0 and 100 are the default values of start and stop: to execute this just 'press enter'].
@@ -10,5 +10,5 @@ Once you initialize this these are the things that you should take notice of:
 5. Remember no changes can be done after the value is entered.
 6. Be mindful of giving proper input!
 
-**Do your best!**
+*Do your best!*
 
