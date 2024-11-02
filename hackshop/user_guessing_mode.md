@@ -9,5 +9,6 @@ Once you initialize this these are the things that you should take notice of:
 4. You could exit at any point of time.
 5. Remember no changes can be done after the value is entered.
 6. Be mindful of giving proper input!
-**Do you best**
+
+**Do your best!**
 
