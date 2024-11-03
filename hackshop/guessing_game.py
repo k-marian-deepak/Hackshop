@@ -78,10 +78,8 @@ def random_guessing():
             high_or_low = valid_input_or_not("Is the number higher or lower than this guess? (high/low): ", expected_type=str, allowed_values=["high", "low"])
 
             if high_or_low == "high":
-                global start
                 start = guess + 1
             elif high_or_low == "low":
-                global end
                 end = guess - 1
 
 # User Guessing part
