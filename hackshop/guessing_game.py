@@ -64,16 +64,22 @@ def binary_search():
 
 # Random guessing method
 def random_guessing():
+    seen = set()
     attempts = 0
     while True:
         guess = random.randint(start, end)
-        print(f"Computer guesses: {guess}")
-        user_response = valid_input_or_not(f"Is {guess} your number? (yes/no): ", expected_type=str, allowed_values=["yes", "no"])
+        seen.append(guess)
+        
+        if guess not in seen:
+            print(f"Computer guesses: {guess}")
+            user_response = valid_input_or_not(f"Is {guess} your number? (yes/no): ", expected_type=str, allowed_values=["yes", "no"])
 
         attempts += 1
+
         if user_response == "yes":
             print(f"Computer found the number in {attempts} tries!")
             break
+
         elif user_response == "no":
             high_or_low = valid_input_or_not("Is the number higher or lower than this guess? (high/low): ", expected_type=str, allowed_values=["high", "low"])
 
@@ -86,6 +92,7 @@ def random_guessing():
 def user_guess(random_num, attempts):
     print(open("user_guessing_mode.md").read())
     for i in range(attempts):
+        print(f"Tries left: {attempts-i}")
         user_guess_num = valid_input_or_not("Enter a number that you guess (or type 'exit' to quit): ", expected_type=int)
 
         if user_guess_num == random_num:
