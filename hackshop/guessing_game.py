@@ -13,15 +13,15 @@ def valid_input_or_not(prompt, expected_type=int, default=None, allowed_values=N
     while True:
         user_input = exit_or_not(prompt)
 
-        # If input is empty and a default is provided, use the default: "range_()" -> satisfies
+        # If input is empty and a default is provided, use the default
         if (not user_input) and (default is not None):
             return default
 
-        # Check for allowed values (e.g., 'user' or 'computer' for game type): (Mode of the game) "guess_game()" -> Satisfies
+        # Check for allowed values
         if allowed_values and user_input.lower() in allowed_values:
             return user_input.lower()
 
-        # Check if input matches the expected type (e.g., integer for range or attempts): for "range_()" & "attmpts -> user-guess()" -> Satisfies
+        # Check if input matches the expected type (e.g., integer for range or attempts)
         if expected_type == int:
             try:
                 return int(user_input)
@@ -43,16 +43,18 @@ def range_():
     random_num = random.randint(start, end)
     return random_num  # The number the user tries to guess
 
-# Computer guessing part: Binary Search
-def binary_search():
-    high = end  # Use 'end' as the upper limit for binary search
-    low = start  # Use 'start' as the lower limit for binary search
-    while low <= high:
+def binary_search(attempts):
+    high = end
+    low = start
+    attempt_count = 0
+    while low <= high and attempt_count < attempts:
+        print("Attempt count:", attempt_count + 1)
         mid = (low + high) // 2
         guess = valid_input_or_not(f"Is {mid} the number you guessed (yes/no): ", expected_type=str, allowed_values=["yes", "no"])
+        attempt_count += 1
 
         if guess == "yes":
-            print("Yay, I won!")
+            print(f"Yay, I won in {attempt_count} attempts!")
             break
         elif guess == "no":
             high_or_low = valid_input_or_not(f"Is the number higher or lower than {mid} (high/low): ", expected_type=str, allowed_values=["high", "low"])
@@ -61,25 +63,30 @@ def binary_search():
                 low = mid + 1
             elif high_or_low == "low":
                 high = mid - 1
+    else:
+        if attempt_count >= attempts:
+            print("Out of attempts!")
+        elif low > high:
+            print("The range was exhausted! The number could not be guessed.")
 
 # Random guessing method
 def random_guessing():
+    global start, end  # Declare start and end as global to modify them here
     seen = set()
     attempts = 0
     while True:
         guess = random.randint(start, end)
-        seen.append(guess)
-        
-        if guess not in seen:
-            print(f"Computer guesses: {guess}")
-            user_response = valid_input_or_not(f"Is {guess} your number? (yes/no): ", expected_type=str, allowed_values=["yes", "no"])
+        if guess in seen:
+            continue  # Skip already guessed numbers
+        seen.add(guess)
 
+        print(f"Computer guesses: {guess}")
+        user_response = valid_input_or_not(f"Is {guess} your number? (yes/no): ", expected_type=str, allowed_values=["yes", "no"])
         attempts += 1
 
         if user_response == "yes":
             print(f"Computer found the number in {attempts} tries!")
             break
-
         elif user_response == "no":
             high_or_low = valid_input_or_not("Is the number higher or lower than this guess? (high/low): ", expected_type=str, allowed_values=["high", "low"])
 
@@ -90,16 +97,20 @@ def random_guessing():
 
 # User Guessing part
 def user_guess(random_num, attempts):
-    print(open("user_guessing_mode.md").read())
     for i in range(attempts):
-        print(f"Tries left: {attempts-i}")
         user_guess_num = valid_input_or_not("Enter a number that you guess (or type 'exit' to quit): ", expected_type=int)
 
+        if user_guess_num not in range(start, end + 1):
+            print(f"The number you guessed is out of range. \nGuesses left: {attempts - i - 1}")
+            continue  # Skip the rest of the loop if out of range
+        
         if user_guess_num == random_num:
-            print("You guessed it right!!")
+            print("You guessed it right!")
             break
+        elif user_guess_num < random_num:
+            print(f"Try a higher number. \nGuesses left: {attempts - i - 1}")
         else:
-            print("Better try next time!")
+            print(f"Try a lower number. \nGuesses left: {attempts - i - 1}")
     else:
         print("Out of tries! The correct number was:", random_num)
 
@@ -109,16 +120,16 @@ def guess_game():
 
     if game_type == "user":
         attempts = valid_input_or_not("Enter the number of tries (or type 'exit' to quit): ", expected_type=int)
-        random_num = range_()  # Get random number from range_()
+        random_num = range_()
         user_guess(random_num, attempts)
 
     elif game_type == "computer":
         attempts = valid_input_or_not("Would you like the computer to use optimal attempts? (Enter number of tries or type 'no' for random guessing): ", expected_type=int, default="no")
-        range_()  # Sets start and end for guessing range
+        range_()
 
-        if isinstance(attempts, int):  # Use binary search if user provides an attempt count
-            binary_search()
-        else:  # Use random guessing if no specific number of attempts is given
+        if isinstance(attempts, int):
+            binary_search(attempts)
+        else:
             random_guessing()
 
 # Start the game
