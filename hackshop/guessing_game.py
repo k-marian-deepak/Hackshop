@@ -115,4 +115,5 @@ def guess_game():
             random_guessing()
 
 # Start the game
-guess_game()
+while True:
+    guess_game()
